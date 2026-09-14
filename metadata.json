@@ -1,0 +1,6 @@
+{
+  "name": "MEMORIA — Digital Yearbook",
+  "description": "Buku kenangan digital modern dan papan pesan kelulusan interaktif dengan layout bento-grid, canvas tanda tangan digital, dan filter data siswa.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
