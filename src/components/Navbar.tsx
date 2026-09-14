@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { BookHeart, Menu, X, PenLine, Sparkles } from 'lucide-react';
+import { BookHeart, Menu, X, PenLine, Sparkles, UserPlus } from 'lucide-react';
 
 interface NavbarProps {
   onOpenMessageModal: () => void;
+  onOpenAddStudentModal?: () => void;
 }
 
-export const Navbar: React.FC<NavbarProps> = ({ onOpenMessageModal }) => {
+export const Navbar: React.FC<NavbarProps> = ({ onOpenMessageModal, onOpenAddStudentModal }) => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
@@ -72,20 +73,41 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenMessageModal }) => {
             ))}
           </nav>
 
-          {/* CTA Button */}
+          {/* CTA Buttons */}
           <div className="hidden md:flex items-center gap-3">
+            {onOpenAddStudentModal && (
+              <button
+                id="nav-btn-add-student"
+                onClick={onOpenAddStudentModal}
+                className="inline-flex items-center gap-1.5 px-3.5 py-2 text-xs sm:text-sm font-semibold text-stone-900 bg-amber-300 hover:bg-amber-400 border border-amber-400/80 rounded-xl shadow-2xs transition-all active:scale-95 cursor-pointer"
+              >
+                <UserPlus className="w-4 h-4 text-stone-950" />
+                <span>+ Tambahkan Dirimu</span>
+              </button>
+            )}
             <button
               id="nav-btn-message"
               onClick={onOpenMessageModal}
-              className="inline-flex items-center gap-2 px-4 py-2 text-sm font-semibold text-stone-900 bg-amber-100 hover:bg-amber-200 border border-amber-300/80 rounded-xl shadow-2xs hover:shadow-xs transition-all active:scale-95 cursor-pointer"
+              className="inline-flex items-center gap-2 px-3.5 py-2 text-xs sm:text-sm font-semibold text-stone-900 bg-stone-100 hover:bg-stone-200 border border-stone-300/80 rounded-xl shadow-2xs hover:shadow-xs transition-all active:scale-95 cursor-pointer"
             >
-              <PenLine className="w-4 h-4 text-amber-800" />
+              <PenLine className="w-4 h-4 text-stone-700" />
               <span>Tinggalkan Pesan</span>
             </button>
           </div>
 
           {/* Mobile Menu Toggle Button */}
           <div className="flex md:hidden items-center gap-2">
+            {onOpenAddStudentModal && (
+              <button
+                id="nav-btn-add-student-mobile-icon"
+                onClick={onOpenAddStudentModal}
+                className="p-2 text-stone-950 bg-amber-300 border border-amber-400/80 rounded-lg active:scale-95"
+                title="Tambahkan Dirimu"
+                aria-label="Tambahkan Dirimu"
+              >
+                <UserPlus className="w-4 h-4" />
+              </button>
+            )}
             <button
               id="nav-btn-message-mobile-icon"
               onClick={onOpenMessageModal}
@@ -125,15 +147,27 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenMessageModal }) => {
             ))}
           </div>
 
-          <div className="pt-2 border-t border-stone-200">
+          <div className="pt-2 border-t border-stone-200 space-y-2">
+            {onOpenAddStudentModal && (
+              <button
+                onClick={() => {
+                  setMobileMenuOpen(false);
+                  onOpenAddStudentModal();
+                }}
+                className="w-full flex items-center justify-center gap-2 px-4 py-3 text-sm font-semibold text-stone-950 bg-amber-300 hover:bg-amber-400 rounded-xl shadow-xs transition-all active:scale-98"
+              >
+                <UserPlus className="w-4 h-4 text-stone-950" />
+                <span>+ Tambahkan Dirimu</span>
+              </button>
+            )}
             <button
               onClick={() => {
                 setMobileMenuOpen(false);
                 onOpenMessageModal();
               }}
-              className="w-full flex items-center justify-center gap-2 px-4 py-3 text-sm font-semibold text-stone-900 bg-amber-200 hover:bg-amber-300 rounded-xl shadow-xs transition-all active:scale-98"
+              className="w-full flex items-center justify-center gap-2 px-4 py-3 text-sm font-semibold text-stone-900 bg-stone-100 hover:bg-stone-200 border border-stone-200 rounded-xl shadow-xs transition-all active:scale-98"
             >
-              <PenLine className="w-4 h-4 text-amber-900" />
+              <PenLine className="w-4 h-4 text-stone-700" />
               <span>Tinggalkan Pesan Kelulusan</span>
             </button>
           </div>

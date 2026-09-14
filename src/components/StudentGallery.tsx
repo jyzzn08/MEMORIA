@@ -2,7 +2,7 @@ import React from 'react';
 import { Student } from '../types';
 import { StudentCard } from './StudentCard';
 import { FilterBar } from './FilterBar';
-import { Users, Frown, Sparkles } from 'lucide-react';
+import { Users, Frown, Sparkles, UserPlus } from 'lucide-react';
 
 interface StudentGalleryProps {
   students: Student[];
@@ -18,6 +18,8 @@ interface StudentGalleryProps {
   onResetFilters: () => void;
   onSelectStudent: (student: Student) => void;
   onLeaveMessageForStudent: (student: Student) => void;
+  onEditStudent?: (student: Student) => void;
+  onOpenAddStudentModal?: () => void;
 }
 
 export const StudentGallery: React.FC<StudentGalleryProps> = ({
@@ -34,22 +36,39 @@ export const StudentGallery: React.FC<StudentGalleryProps> = ({
   onResetFilters,
   onSelectStudent,
   onLeaveMessageForStudent,
+  onEditStudent,
+  onOpenAddStudentModal,
 }) => {
   return (
     <section id="angkatan" className="py-16 md:py-24 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 scroll-mt-24">
       {/* Section Header */}
-      <div className="text-center max-w-2xl mx-auto mb-10">
-        <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-stone-200/80 text-stone-700 text-xs font-semibold tracking-wider uppercase mb-3">
-          <Users className="w-3.5 h-3.5 text-stone-600" />
-          <span>Direktori Siswa</span>
+      <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-10">
+        <div className="max-w-2xl">
+          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-stone-200/80 text-stone-700 text-xs font-semibold tracking-wider uppercase mb-3">
+            <Users className="w-3.5 h-3.5 text-stone-600" />
+            <span>Direktori Siswa</span>
+          </div>
+          <h2 className="font-serif-title text-3xl sm:text-4xl md:text-5xl font-bold text-stone-900 tracking-tight mb-3">
+            Kenangan Satu Angkatan
+          </h2>
+          <p className="text-stone-600 text-sm sm:text-base leading-relaxed">
+            Setiap wajah memiliki cerita, mimpi, dan jejak langkah yang mengukir sejarah
+            kebersamaan kita selama tiga tahun penuh arti.
+          </p>
         </div>
-        <h2 className="font-serif-title text-3xl sm:text-4xl md:text-5xl font-bold text-stone-900 tracking-tight mb-3">
-          Kenangan Satu Angkatan
-        </h2>
-        <p className="text-stone-600 text-sm sm:text-base leading-relaxed">
-          Setiap wajah memiliki cerita, mimpi, dan jejak langkah yang mengukir sejarah
-          kebersamaan kita selama tiga tahun penuh arti.
-        </p>
+
+        {onOpenAddStudentModal && (
+          <div className="shrink-0">
+            <button
+              id="btn-gallery-add-student"
+              onClick={onOpenAddStudentModal}
+              className="inline-flex items-center gap-2 px-5 py-3 rounded-2xl bg-stone-900 text-amber-200 hover:bg-stone-800 text-xs sm:text-sm font-semibold shadow-xs hover:shadow-md transition-all active:scale-95 cursor-pointer"
+            >
+              <UserPlus className="w-4 h-4 text-amber-300" />
+              <span>+ Tambahkan Dirimu</span>
+            </button>
+          </div>
+        )}
       </div>
 
       {/* Filter and Search Bar */}
@@ -96,6 +115,7 @@ export const StudentGallery: React.FC<StudentGalleryProps> = ({
               student={student}
               onSelect={onSelectStudent}
               onLeaveMessage={onLeaveMessageForStudent}
+              onEdit={onEditStudent}
             />
           ))}
         </div>

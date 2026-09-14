@@ -1,11 +1,12 @@
 import React from 'react';
-import { ArrowDown, Users, MessageSquareText, Trophy, Sparkles, HeartHandshake } from 'lucide-react';
+import { ArrowDown, Users, MessageSquareText, Trophy, Sparkles, HeartHandshake, UserPlus } from 'lucide-react';
 
 interface HeroProps {
   totalStudents: number;
   totalMessages: number;
   totalExtracurriculars: number;
   onOpenMessageModal: () => void;
+  onOpenAddStudentModal?: () => void;
 }
 
 export const Hero: React.FC<HeroProps> = ({
@@ -13,6 +14,7 @@ export const Hero: React.FC<HeroProps> = ({
   totalMessages,
   totalExtracurriculars,
   onOpenMessageModal,
+  onOpenAddStudentModal,
 }) => {
   return (
     <section
@@ -48,6 +50,17 @@ export const Hero: React.FC<HeroProps> = ({
 
           {/* Action Buttons */}
           <div className="flex flex-wrap items-center justify-center gap-3.5 sm:gap-4 mb-14">
+            {onOpenAddStudentModal && (
+              <button
+                id="hero-btn-add-student"
+                onClick={onOpenAddStudentModal}
+                className="inline-flex items-center gap-2.5 px-6 py-3.5 text-sm sm:text-base font-semibold rounded-xl bg-amber-400 text-stone-950 hover:bg-amber-300 transition-all shadow-md hover:shadow-lg active:scale-98 cursor-pointer"
+              >
+                <UserPlus className="w-4 h-4 text-stone-950" />
+                <span>+ Tambahkan Dirimu</span>
+              </button>
+            )}
+
             <a
               href="#angkatan"
               id="hero-btn-explore"

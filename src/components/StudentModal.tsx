@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { Student, YearbookMessage } from '../types';
-import { X, Heart, Sparkles, BookOpen, Quote, Trophy, Tag, MessageSquareHeart, User } from 'lucide-react';
+import { X, Heart, Sparkles, BookOpen, Quote, Trophy, Tag, MessageSquareHeart, User, Edit3 } from 'lucide-react';
 
 interface StudentModalProps {
   student: Student | null;
   isOpen: boolean;
   onClose: () => void;
   onLeaveMessage: (student: Student) => void;
+  onEditStudent?: (student: Student) => void;
   messages: YearbookMessage[];
 }
 
@@ -15,6 +16,7 @@ export const StudentModal: React.FC<StudentModalProps> = ({
   isOpen,
   onClose,
   onLeaveMessage,
+  onEditStudent,
   messages,
 }) => {
   const [imageError, setImageError] = useState(false);
@@ -50,7 +52,7 @@ export const StudentModal: React.FC<StudentModalProps> = ({
   if (!isOpen || !student) return null;
 
   // Filter messages linked to this student (studentId === student.id)
-  const studentMessages = messages.filter((m) => m.studentId === student.id);
+  const studentMessages = messages.filter((m) => String(m.studentId) === String(student.id));
 
   return (
     <div
@@ -94,7 +96,13 @@ export const StudentModal: React.FC<StudentModalProps> = ({
             <div className="absolute inset-0 bg-linear-to-t from-[#FAF8F5] via-[#FAF8F5]/30 to-transparent" />
 
             {/* Badges on Banner */}
-            <div className="absolute bottom-4 left-6 flex items-center gap-2">
+            <div className="absolute bottom-4 left-6 flex flex-wrap items-center gap-2">
+              {student.isCustom && (
+                <span className="px-3 py-1 rounded-full text-xs font-bold bg-amber-400 text-stone-950 shadow-sm flex items-center gap-1">
+                  <Sparkles className="w-3.5 h-3.5" />
+                  <span>Profil Kamu ✨</span>
+                </span>
+              )}
               <span className="px-3 py-1 rounded-full text-xs font-bold bg-stone-900 text-amber-200 shadow-sm">
                 {student.class}
               </span>
@@ -244,25 +252,44 @@ export const StudentModal: React.FC<StudentModalProps> = ({
             </div>
 
             {/* Action Bar */}
-            <div className="pt-3 flex items-center justify-end gap-3">
-              <button
-                id="btn-modal-cancel"
-                onClick={onClose}
-                className="px-4 py-2.5 rounded-xl border border-stone-300 text-xs font-semibold text-stone-700 hover:bg-stone-100 transition-colors cursor-pointer"
-              >
-                Tutup
-              </button>
-              <button
-                id="btn-modal-leave-message"
-                onClick={() => {
-                  onClose();
-                  onLeaveMessage(student);
-                }}
-                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-stone-900 hover:bg-stone-800 text-amber-200 text-xs font-semibold shadow-xs transition-colors cursor-pointer"
-              >
-                <Heart className="w-3.5 h-3.5 text-amber-300" />
-                <span>Tinggalkan Pesan untuk {student.nickname}</span>
-              </button>
+            <div className="pt-3 flex flex-wrap items-center justify-between gap-3">
+              <div>
+                {student.isCustom && onEditStudent && (
+                  <button
+                    type="button"
+                    id="btn-modal-edit-profile"
+                    onClick={() => {
+                      onClose();
+                      onEditStudent(student);
+                    }}
+                    className="inline-flex items-center gap-1.5 px-4 py-2.5 rounded-xl border border-amber-300 bg-amber-100 hover:bg-amber-200 text-amber-900 text-xs font-semibold shadow-2xs transition-colors cursor-pointer"
+                  >
+                    <Edit3 className="w-3.5 h-3.5 text-amber-800" />
+                    <span>Edit Profil</span>
+                  </button>
+                )}
+              </div>
+
+              <div className="flex items-center gap-3 ml-auto">
+                <button
+                  id="btn-modal-cancel"
+                  onClick={onClose}
+                  className="px-4 py-2.5 rounded-xl border border-stone-300 text-xs font-semibold text-stone-700 hover:bg-stone-100 transition-colors cursor-pointer"
+                >
+                  Tutup
+                </button>
+                <button
+                  id="btn-modal-leave-message"
+                  onClick={() => {
+                    onClose();
+                    onLeaveMessage(student);
+                  }}
+                  className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-stone-900 hover:bg-stone-800 text-amber-200 text-xs font-semibold shadow-xs transition-colors cursor-pointer"
+                >
+                  <Heart className="w-3.5 h-3.5 text-amber-300" />
+                  <span>Tinggalkan Pesan untuk {student.nickname}</span>
+                </button>
+              </div>
             </div>
           </div>
         </div>

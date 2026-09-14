@@ -6,7 +6,7 @@
 export type BentoSpanType = 'normal' | 'wide' | 'tall' | 'featured' | 'landscape' | 'portrait' | 'large';
 
 export interface Student {
-  id: number;
+  id: number | string;
   name: string;
   nickname: string;
   class: string;
@@ -19,11 +19,12 @@ export interface Student {
   dreamCareer?: string;
   socialHandle?: string;
   favoriteMemory?: string;
+  isCustom?: boolean; // Menandai profil yang ditambahkan oleh user via "Tambahkan Dirimu"
 }
 
 export interface YearbookMessage {
   id: string;
-  studentId: number | null; // Hubungan relasional ke student (null = untuk angkatan umum)
+  studentId: number | string | null; // Hubungan relasional ke student (null = untuk angkatan umum)
   sender: string;
   senderRole?: string;
   message: string;

@@ -1,17 +1,19 @@
 import React, { useState } from 'react';
 import { Student } from '../types';
-import { Eye, Heart, Sparkles, User, GraduationCap, Quote } from 'lucide-react';
+import { Eye, Heart, Sparkles, User, GraduationCap, Quote, Edit3 } from 'lucide-react';
 
 interface StudentCardProps {
   student: Student;
   onSelect: (student: Student) => void;
   onLeaveMessage: (student: Student) => void;
+  onEdit?: (student: Student) => void;
 }
 
 export const StudentCard: React.FC<StudentCardProps> = ({
   student,
   onSelect,
   onLeaveMessage,
+  onEdit,
 }) => {
   const [imageError, setImageError] = useState(false);
 
@@ -75,10 +77,17 @@ export const StudentCard: React.FC<StudentCardProps> = ({
         {/* Top Header: Featured Ribbon & Tags */}
         <div className="relative z-10 p-5 sm:p-6 flex items-start justify-between gap-3">
           <div className="flex flex-wrap items-center gap-2">
-            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-amber-400 text-stone-950 shadow-sm tracking-wide">
-              <Sparkles className="w-3.5 h-3.5" />
-              <span>Profil Pilihan</span>
-            </span>
+            {student.isCustom ? (
+              <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-amber-400 text-stone-950 shadow-sm tracking-wide">
+                <Sparkles className="w-3.5 h-3.5" />
+                <span>Profil Kamu ✨</span>
+              </span>
+            ) : (
+              <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-amber-400 text-stone-950 shadow-sm tracking-wide">
+                <Sparkles className="w-3.5 h-3.5" />
+                <span>Profil Pilihan</span>
+              </span>
+            )}
             <span className="px-3 py-1 rounded-full text-xs font-semibold bg-white/15 backdrop-blur-md text-white border border-white/20">
               {student.class}
             </span>
@@ -191,9 +200,20 @@ export const StudentCard: React.FC<StudentCardProps> = ({
 
           {/* Floating Badges on Photo */}
           <div className="absolute top-3 left-3 flex items-center gap-1.5 pointer-events-none">
-            <span className="px-2.5 py-1 rounded-full text-[11px] font-bold bg-white/95 text-stone-900 shadow-2xs backdrop-blur-sm">
-              {student.class}
-            </span>
+            {student.isCustom ? (
+              <span className="px-2.5 py-1 rounded-full text-[11px] font-bold bg-amber-400 text-stone-950 shadow-2xs backdrop-blur-sm">
+                Profil Kamu ✨
+              </span>
+            ) : (
+              <span className="px-2.5 py-1 rounded-full text-[11px] font-bold bg-white/95 text-stone-900 shadow-2xs backdrop-blur-sm">
+                {student.class}
+              </span>
+            )}
+            {student.isCustom && (
+              <span className="px-2.5 py-1 rounded-full text-[11px] font-bold bg-white/95 text-stone-900 shadow-2xs backdrop-blur-sm">
+                {student.class}
+              </span>
+            )}
           </div>
 
           <div className="absolute bottom-3 left-3 pointer-events-none sm:hidden">
@@ -259,6 +279,21 @@ export const StudentCard: React.FC<StudentCardProps> = ({
               <Eye className="w-3.5 h-3.5" />
               <span>Detail Profil</span>
             </button>
+            {student.isCustom && onEdit && (
+              <button
+                id={`btn-edit-profile-${student.id}`}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onEdit(student);
+                }}
+                title={`Edit profil ${student.nickname}`}
+                className="p-2 rounded-xl text-stone-950 bg-amber-300 hover:bg-amber-400 border border-amber-400/80 transition-colors active:scale-95 cursor-pointer flex items-center gap-1"
+                aria-label={`Edit profil ${student.nickname}`}
+              >
+                <Edit3 className="w-3.5 h-3.5" />
+                <span className="hidden sm:inline text-xs font-semibold">Edit</span>
+              </button>
+            )}
             <button
               id={`btn-quick-message-${student.id}`}
               onClick={(e) => {
@@ -309,9 +344,16 @@ export const StudentCard: React.FC<StudentCardProps> = ({
 
           {/* Top Badges */}
           <div className="absolute top-3 left-3 right-3 flex items-center justify-between pointer-events-none">
-            <span className="px-2.5 py-1 rounded-full text-[11px] font-bold bg-white/95 text-stone-900 shadow-2xs backdrop-blur-sm">
-              {student.class}
-            </span>
+            <div className="flex items-center gap-1.5">
+              {student.isCustom && (
+                <span className="px-2.5 py-1 rounded-full text-[11px] font-bold bg-amber-400 text-stone-950 shadow-2xs backdrop-blur-sm">
+                  Profil Kamu ✨
+                </span>
+              )}
+              <span className="px-2.5 py-1 rounded-full text-[11px] font-bold bg-white/95 text-stone-900 shadow-2xs backdrop-blur-sm">
+                {student.class}
+              </span>
+            </div>
             <span className="px-2.5 py-1 rounded-full text-[11px] font-semibold bg-stone-900/85 text-amber-200 border border-white/20 backdrop-blur-sm">
               "{student.nickname}"
             </span>
@@ -382,6 +424,21 @@ export const StudentCard: React.FC<StudentCardProps> = ({
               <Eye className="w-3.5 h-3.5" />
               <span>Lihat Profil</span>
             </button>
+            {student.isCustom && onEdit && (
+              <button
+                id={`btn-edit-profile-${student.id}`}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onEdit(student);
+                }}
+                title={`Edit profil ${student.nickname}`}
+                className="p-2 rounded-xl text-stone-950 bg-amber-300 hover:bg-amber-400 border border-amber-400/80 transition-colors active:scale-95 cursor-pointer flex items-center gap-1"
+                aria-label={`Edit profil ${student.nickname}`}
+              >
+                <Edit3 className="w-3.5 h-3.5" />
+                <span className="hidden sm:inline text-xs font-semibold">Edit</span>
+              </button>
+            )}
             <button
               id={`btn-quick-message-${student.id}`}
               onClick={(e) => {
@@ -430,9 +487,16 @@ export const StudentCard: React.FC<StudentCardProps> = ({
 
         {/* Floating Top Badges */}
         <div className="absolute top-3 left-3 right-3 flex items-center justify-between pointer-events-none">
-          <span className="px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-white/95 text-stone-900 shadow-2xs backdrop-blur-sm">
-            {student.class}
-          </span>
+          <div className="flex items-center gap-1.5">
+            {student.isCustom && (
+              <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-amber-400 text-stone-950 shadow-2xs backdrop-blur-sm">
+                Profil Kamu ✨
+              </span>
+            )}
+            <span className="px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-white/95 text-stone-900 shadow-2xs backdrop-blur-sm">
+              {student.class}
+            </span>
+          </div>
           <span className="px-2 py-0.5 rounded-full text-[11px] font-semibold bg-stone-900/80 text-amber-200 border border-white/20 backdrop-blur-sm">
             "{student.nickname}"
           </span>
@@ -487,6 +551,21 @@ export const StudentCard: React.FC<StudentCardProps> = ({
             <Eye className="w-3.5 h-3.5" />
             <span>Lihat Profil</span>
           </button>
+          {student.isCustom && onEdit && (
+            <button
+              id={`btn-edit-profile-${student.id}`}
+              onClick={(e) => {
+                e.stopPropagation();
+                onEdit(student);
+              }}
+              title={`Edit profil ${student.nickname}`}
+              className="p-2 rounded-xl text-stone-950 bg-amber-300 hover:bg-amber-400 border border-amber-400/80 transition-colors active:scale-95 cursor-pointer flex items-center gap-1"
+              aria-label={`Edit profil ${student.nickname}`}
+            >
+              <Edit3 className="w-3.5 h-3.5" />
+              <span className="hidden sm:inline text-xs font-semibold">Edit</span>
+            </button>
+          )}
           <button
             id={`btn-quick-message-${student.id}`}
             onClick={(e) => {
